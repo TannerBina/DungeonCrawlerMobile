@@ -28,7 +28,10 @@
             android:name=".activities.CharacterListActivity"
             android:label="@string/title_activity_character_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.CreateCharacterActivity"></activity>
+        <activity android:name=".activities.CreateCharacterActivity" />
+        <activity android:name=".CharacterViewActivity" />
+        <activity android:name=".GameListActivity" />
+        <activity android:name=".GameActivity"></activity>
     </application>
 
 </manifest>

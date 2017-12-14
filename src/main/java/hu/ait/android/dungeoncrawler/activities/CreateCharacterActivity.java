@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import hu.ait.android.dungeoncrawler.R;
+import hu.ait.android.dungeoncrawler.adapters.CharacterAdapter;
 import hu.ait.android.dungeoncrawler.data.User;
 import hu.ait.android.dungeoncrawler.imports.backend.Character;
 import hu.ait.android.dungeoncrawler.imports.backend.Weapon;
@@ -142,14 +143,12 @@ public class CreateCharacterActivity extends AppCompatActivity {
                     weapon.bonus = Integer.parseInt(bonus.getText().toString());
                     if (finesse.isChecked()){
                         weapon.finess = "TRUE";
-                    } else weapon.finess = "TRUE";
+                    } else weapon.finess = "FALSE";
 
                     weaponList.add(weapon);
                     if (weaponList.size() == 3){
                         btnAddWeapon.setEnabled(false);
                     }
-
-                    System.out.println(weapon.toString());
                 }
             }
         });
@@ -222,6 +221,7 @@ public class CreateCharacterActivity extends AppCompatActivity {
             }
         }.execute(input);
 
+        newChar.validate();
         User.getInstance().getAllCharacters().add(newChar);
         Intent intent = new Intent();
         intent.setClass(CreateCharacterActivity.this, CharacterListActivity.class);
@@ -355,7 +355,7 @@ public class CreateCharacterActivity extends AppCompatActivity {
 
     private void setWeapons(Character newChar) {
         for (Weapon w : weaponList){
-            String weaponString = w.toString().substring("__WEAPON__".length()+1,
+            String weaponString = w.toString().substring("__WEAPON__".length(),
                     w.toString().length());
             newChar.setStat(Character.StatTag.WEAPON, weaponString);
         }
@@ -463,6 +463,11 @@ public class CreateCharacterActivity extends AppCompatActivity {
         }
         if (etCCName.getText().toString().isEmpty()){
             etCCName.setError(getString(R.string.error_field_required));
+            focusView = etCCName;
+            result = false;
+        }
+        if (User.getInstance().findCharacter(etCCName.getText().toString()) != null){
+            etCCName.setError(getString(R.string.error_name_duplicate));
             focusView = etCCName;
             result = false;
         }

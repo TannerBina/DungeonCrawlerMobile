@@ -7,10 +7,12 @@ public class Game {
 
 	private String name;
 	private String password;
-	
-	public Game(String name, String password) {
+	private String host;
+
+	public Game(String name, String password, String host) {
 		this.name = name;
 		this.password = password;
+		this.host = host;
 	}
 	
 	public String getName() {
@@ -24,5 +26,13 @@ public class Game {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
 	}
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Constants {
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	
 	public static final String LAMBDA_DELIMINATOR = "__";
 	public static final String CHAR_ID_TAG = "CHAR_ID";

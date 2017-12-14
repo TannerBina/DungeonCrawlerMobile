@@ -231,7 +231,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     final LoginService login = factory.build(LoginService.class);
                     result = login.login(input);
-                } catch (LambdaFunctionException e){
+                } catch (Exception e){
                     return false;
                 }
 

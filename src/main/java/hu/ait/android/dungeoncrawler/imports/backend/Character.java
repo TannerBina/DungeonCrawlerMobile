@@ -1,6 +1,7 @@
 package hu.ait.android.dungeoncrawler.imports.backend;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -61,6 +62,26 @@ public class Character {
 		StatTag(StatTag dependent){
 			this.dependent = dependent;
 		}
+	}
+
+	/*
+	 * Validates all of the stats of the character
+	 */
+	public void validate() {
+		//create all stat bonus values
+		for (StatTag tag : EnumSet.range(StatTag.STR_BON, StatTag.CHA_BON)){
+			int dependent = Integer.parseInt(getStat(tag.dependent));
+			int bonus = (dependent / 2)-5;
+			singularStatMap.put(tag.ordinal(), (new Integer(bonus)).toString());
+		}
+
+		//calculate total hp and put into the map
+		int hp = Integer.parseInt(getStat(StatTag.BASE_HP)) + Integer.parseInt(getStat(StatTag.CON_BON))
+				* Integer.parseInt(getStat(StatTag.LEVEL));
+		singularStatMap.put(StatTag.TOTAL_HP.ordinal(), new Integer(hp).toString());
+		singularStatMap.put(StatTag.CURRENT_HP.ordinal(), new Integer(hp).toString());
+
+		//TODO add num spells
 	}
 
 	public void setStat(StatTag toSet, String value){

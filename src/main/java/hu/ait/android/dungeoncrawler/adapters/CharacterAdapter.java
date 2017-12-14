@@ -2,15 +2,18 @@ package hu.ait.android.dungeoncrawler.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.ait.android.dungeoncrawler.CharacterViewActivity;
 import hu.ait.android.dungeoncrawler.R;
 import hu.ait.android.dungeoncrawler.data.User;
 import hu.ait.android.dungeoncrawler.imports.backend.Character;
@@ -47,6 +50,15 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
         return characterList.size();
     }
 
+    public Character findCharacter(String name){
+        for (Character c : characterList){
+            if (c.getStat(Character.StatTag.NAME).equals(name)){
+                return c;
+            }
+        }
+        return null;
+    }
+
     public String deleteCharacter(String s) {
         Character found = null;
         int pos = -1;
@@ -67,7 +79,7 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
         return found.getStat(Character.StatTag.ID);
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView tvName;
         private TextView tvClass;
         private TextView tvRace;
@@ -79,8 +91,22 @@ public class CharacterAdapter extends RecyclerView.Adapter<CharacterAdapter.View
             tvClass = characterView.findViewById(R.id.tvClass);
             tvRace = characterView.findViewById(R.id.tvRace);
 
-            //TODO allow clicking
-            //itemView.setClickable(true);
+            itemView.setClickable(true);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    User.getInstance().setActiveCharacter(findCharacter(tvName.getText().toString()));
+                    if (User.getInstance().getActiveCharacter() == null){
+                        Toast.makeText(context,
+                                context.getString(R.string.error_unexpected),
+                                Toast.LENGTH_LONG).show();
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(context, CharacterViewActivity.class);
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 }
